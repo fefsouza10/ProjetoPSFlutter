@@ -3,7 +3,8 @@ import 'package:rxdart/rxdart.dart';
 
 class LoginBloc extends BlocBase  {
   
-  var _controllerLoading = BehaviorSubject<bool>();
+  var _controllerLoading = BehaviorSubject<bool>(seedValue: false);
+  Stream<bool> get outLoading => _controllerLoading.stream;
   
   onClickTelefone(){
 

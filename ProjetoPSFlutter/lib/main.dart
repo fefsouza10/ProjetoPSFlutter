@@ -1,7 +1,3 @@
-import 'package:ProjetoPSFlutter/home_page.dart';
+import 'package:ProjetoPSFlutter/src/app-widget.dart';
 import 'package:flutter/material.dart';
-void main(){
-  runApp(MaterialApp(
-    home: HomePage(),
-  ));
-}
+void main()=> runApp(MyApp());

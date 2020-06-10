@@ -18,6 +18,9 @@ class _LoginContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+  LoginBloc bloc = BlocProvider.of<LoginBloc>(context);
+
+
     _botao(){
       return Column(
         
@@ -28,7 +31,8 @@ class _LoginContent extends StatelessWidget {
             icon: Icon(Icons.phone),
             label: Text("Login Telefone  "),
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-            onPressed: (){},),
+            onPressed: bloc.onClickTelefone,
+          ),
             
           RaisedButton.icon(
             color: Colors.blue ,
@@ -36,7 +40,8 @@ class _LoginContent extends StatelessWidget {
             icon: Icon(FontAwesomeIcons.facebookF),
             label: Text("Login Facebook"),
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-            onPressed: (){},),
+            onPressed: bloc.onClickFacebook,
+          ),
             
           RaisedButton.icon(
             color: Colors.red,
@@ -44,7 +49,8 @@ class _LoginContent extends StatelessWidget {
             icon: Icon(FontAwesomeIcons.google),
             label: Text("Login Google     "),
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-            onPressed: (){},)
+            onPressed: bloc.onClickGoogle,
+          )
         ],
       );
     }
@@ -55,14 +61,20 @@ class _LoginContent extends StatelessWidget {
         children: <Widget>[
           FlutterLogo(size: 72,),
           Container(height: 150,),
-          AnimatedCrossFade(
-            firstChild: _botao(),
-            secondChild: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircularProgressIndicator(),
-            ), 
-            crossFadeState: CrossFadeState.showFirst, 
-            duration: Duration(milliseconds: 500)
+          StreamBuilder(
+             stream: bloc.outLoading,
+             initialData: false,
+             builder: (BuildContext context, AsyncSnapshot snapshot) {
+               return AnimatedCrossFade(                
+                firstChild: _botao(),
+                secondChild: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircularProgressIndicator(),
+              ), 
+              crossFadeState: snapshot.data ? CrossFadeState.showSecond : CrossFadeState.showFirst, 
+              duration: Duration(milliseconds: 500)
+              );
+             },
           ),  
         ],
       ),
