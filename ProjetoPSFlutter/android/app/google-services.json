@@ -1,0 +1,41 @@
+{
+  "project_info": {
+    "project_number": "992317847731",
+    "firebase_url": "https://authps-1ae85.firebaseio.com",
+    "project_id": "authps-1ae85",
+    "storage_bucket": "authps-1ae85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:992317847731:android:619689ee3567041e4798c6",
+        "android_client_info": {
+          "package_name": "com.onionrave.ProjetoPSFlutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "992317847731-u6srr86kvtc4iousahsfkd3l8pi5b0n3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyymYyx5zHnse8Iw2uwX0mD49XcIAjZew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "992317847731-u6srr86kvtc4iousahsfkd3l8pi5b0n3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
+

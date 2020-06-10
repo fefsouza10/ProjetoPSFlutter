@@ -7,9 +7,19 @@ class LoginWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
-       bloc: LoginBloc(), 
-       child: _LoginContent(),
-      
+       bloc: LoginBloc(context),
+       child: Material(
+        child: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            //Image
+            Container(
+              color: Colors.grey[800].withOpacity(0.4),
+            ),
+            SingleChildScrollView(child: _LoginContent()),
+          ],
+        ),    
+       )
     );
   }
 }
@@ -50,7 +60,7 @@ class _LoginContent extends StatelessWidget {
             label: Text("Login Google     "),
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
             onPressed: bloc.onClickGoogle,
-          )
+          ),
         ],
       );
     }
@@ -76,6 +86,11 @@ class _LoginContent extends StatelessWidget {
               );
              },
           ),  
+          TextField(
+            onChanged: (String valor) => bloc.phoneEvent.add,
+            onSubmitted: (String value) => bloc.onClickTelefone(),
+            
+          )
         ],
       ),
     );
