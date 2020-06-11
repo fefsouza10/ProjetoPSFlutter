@@ -18,7 +18,7 @@ class _NoticiasPageState extends State<NoticiasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("NomeDoBot"),
+        title: Text("Noticias"),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.purple,

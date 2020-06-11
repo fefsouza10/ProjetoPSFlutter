@@ -14,12 +14,18 @@ class _ChatPageState extends State<ChatPage> {
   final _messageList = <ChatMessage>[];
   final _controllerText = new TextEditingController();
 
-  void _sendMessage({String text}) {
-    Firestore.instance
-        .collection('messages')
-        .document()
-        .setData({'text': text});
-        _addMessage(name: 'User', text: text, type: ChatMessageType.sent);
+  //void _sendMessage({String text}) {
+    //Firestore.instance
+      //  .collection('messages')
+        //.document()
+        //.setData({'text': text});
+        //_addMessage(name: 'User', text: text, type: ChatMessageType.sent);
+  //}
+
+    @override
+  void dispose() {
+    super.dispose();
+    _controllerText.dispose();
   }
 
   @override
@@ -56,7 +62,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   // Envia uma mensagem com o padrão a direita
-  void _senddMessage({String text}) {
+  void _sendMessage({String text}) {
     _controllerText.clear();
     _addMessage(name: 'User', text: text, type: ChatMessageType.sent);
   }
@@ -77,7 +83,7 @@ class _ChatPageState extends State<ChatPage> {
   Future _dialogFlowRequest({String query}) async {
     // Adiciona uma mensagem temporária na lista
     _addMessage(
-        name: 'TheGoodBot',
+        name: 'NomeDoBot',
         text: 'Escrevendo...',
         type: ChatMessageType.received);
 
@@ -95,7 +101,7 @@ class _ChatPageState extends State<ChatPage> {
 
     // adiciona a mensagem com a resposta do DialogFlow
     _addMessage(
-        name: 'Professor',
+        name: 'NomeDoBot',
         text: response.getMessage() ?? '',
         type: ChatMessageType.received);
   }

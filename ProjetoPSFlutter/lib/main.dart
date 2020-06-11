@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 
 void main() async {
 
-  PageController controller = PageController(
+
+  PageController pcontroller = PageController(
     initialPage: 2,
   );
+
+//Firestore.instance.collection("col").document("doc").setData({"texto": "felipe"});
 
   runApp(
     MaterialApp(
@@ -17,25 +20,30 @@ void main() async {
       theme: ThemeData(
           primarySwatch: Colors.purple,
           iconTheme: IconThemeData(color: Colors.purpleAccent)),
-      home: PageView(controller: controller,
-      children: <Widget>[
-        ChatPage(),
-        NoticiasPage(),
-        PerfilPage(),
-      ],),
+      home: PageView(
+        controller: pcontroller,
+        children: <Widget>[
+          PerfilPage(),
+          ChatPage(),
+          NoticiasPage(),
+        ],
+      ),
     ),
   );
 
 //inserir um doc no firestore
   Firestore.instance
-      .collection("mensagens")
+      .collection("mensagen2s")
       .document()
-      .setData({"texto": "felipe"});
+      .setData({"texto": "1515151"});
 //puxar documentos do firestore
   QuerySnapshot snapshot =
-      await Firestore.instance.collection("mensagens").getDocuments();
+      await Firestore.instance.collection("mensagen2s").getDocuments();
 //printar dados da snapshot
   snapshot.documents.forEach((d) {
     print(d.data);
   });
+
+
+
 }

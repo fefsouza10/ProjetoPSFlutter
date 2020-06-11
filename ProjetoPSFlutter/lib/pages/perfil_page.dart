@@ -18,7 +18,7 @@ class _PerfilPageState extends State<PerfilPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("NomeDoBot"),
+        title: Text("Perfil"),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.purple,
