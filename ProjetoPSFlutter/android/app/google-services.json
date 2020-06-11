@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "221019182011",
+    "firebase_url": "https://botteste-lhgrlp.firebaseio.com",
+    "project_id": "botteste-lhgrlp",
+    "storage_bucket": "botteste-lhgrlp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221019182011:android:187b6cdb5829ef05ff6a9e",
+        "android_client_info": {
+          "package_name": "com.onionrave.ProjetoPSFlutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221019182011-8pipk754fhmuutb4sle5176ulbljp38n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onionrave.ProjetoPSFlutter",
+            "certificate_hash": "f8880708d5e570ecdff2fa89d2e664952702a5cd"
+          }
+        },
+        {
+          "client_id": "221019182011-ss981gocr102ai6433mrjas8uigf7gik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvPMWjYiAgfUSz3_xlhn8JWVS5R0QAsoc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221019182011-ss981gocr102ai6433mrjas8uigf7gik.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
