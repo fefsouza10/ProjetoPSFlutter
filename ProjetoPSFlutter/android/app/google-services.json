@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "653877672290",
-    "firebase_url": "https://nomedobot-bribmw.firebaseio.com",
-    "project_id": "nomedobot-bribmw",
-    "storage_bucket": "nomedobot-bribmw.appspot.com"
+    "project_number": "813399694438",
+    "firebase_url": "https://projetopsf-5743d.firebaseio.com",
+    "project_id": "projetopsf-5743d",
+    "storage_bucket": "projetopsf-5743d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:653877672290:android:623611bd0d69be9afe143b",
+        "mobilesdk_app_id": "1:813399694438:android:500024c4179fc8155da1a7",
         "android_client_info": {
           "package_name": "com.onionrave.ProjetoPSFlutter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "653877672290-4pbikgdocu4grpmgvfg1o4sac6t11ca3.apps.googleusercontent.com",
+          "client_id": "813399694438-tdqd8ed52sumi4ulj6hivalk7cofs2kg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.onionrave.ProjetoPSFlutter",
-            "certificate_hash": "f8880708d5e570ecdff2fa89d2e664952702a5cd"
+            "certificate_hash": "582f10e9c64ce40df425574e2e4637da21d6d2c1"
           }
         },
         {
-          "client_id": "653877672290-hq3ot76t3i0n2ca2dd71etruiekv33go.apps.googleusercontent.com",
+          "client_id": "813399694438-4sd360g7o0iko50uam0nj8i3u6c3h9he.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAyYGrcAPs53-KK-BHa5M6tH53pCIBoiBo"
+          "current_key": "AIzaSyAMCQpTHJSA2fLCDAEe6jOxaf2nhKL16QA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "653877672290-hq3ot76t3i0n2ca2dd71etruiekv33go.apps.googleusercontent.com",
+              "client_id": "813399694438-4sd360g7o0iko50uam0nj8i3u6c3h9he.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

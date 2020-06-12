@@ -89,7 +89,7 @@ class _ChatPageState extends State<ChatPage> {
 
     // Faz a autenticação com o serviço, envia a mensagem e recebe uma resposta da Intent
     AuthGoogle authGoogle =
-        await AuthGoogle(fileJson: "assets/credentials.json").build();
+        await AuthGoogle(fileJson: "assets/key.json").build();
     Dialogflow dialogflow =
         Dialogflow(authGoogle: authGoogle, language: "pt-BR");
     AIResponse response = await dialogflow.detectIntent(query);
