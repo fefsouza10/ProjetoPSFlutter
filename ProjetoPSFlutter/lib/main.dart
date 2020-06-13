@@ -4,7 +4,7 @@ import 'pages/perfil_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-void main() async {
+void main() async{
 
 
   PageController pcontroller = PageController(
@@ -31,14 +31,13 @@ void main() async {
     ),
   );
 
+
+Firestore.instance.collection("col").document("doc").setData({"texto": "felipe"});
 //inserir um doc no firestore
-  Firestore.instance
-      .collection("mensagen2s")
-      .document()
-      .setData({"texto": "1515151"});
+  Firestore.instance.collection("mensagens").document().setData({"texto": "1515151"});
 //puxar documentos do firestore
   QuerySnapshot snapshot =
-      await Firestore.instance.collection("mensagen2s").getDocuments();
+      await Firestore.instance.collection("mensagens").getDocuments();
 //printar dados da snapshot
   snapshot.documents.forEach((d) {
     print(d.data);
