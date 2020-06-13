@@ -1,6 +1,7 @@
 import 'package:ProjetoPSFlutter/widgets/text_composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 class NoticiasPage extends StatefulWidget {
   @override
@@ -9,7 +10,7 @@ class NoticiasPage extends StatefulWidget {
 
 class _NoticiasPageState extends State<NoticiasPage> {
 
-  void _sendMessage({String text}){
+  void _sendMessage({String text, File imgFile}){
     Firestore.instance.collection('messages').document().setData({'text' : text});
     
   }

@@ -1,9 +1,11 @@
 import 'package:ProjetoPSFlutter/widgets/text_composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ProjetoPSFlutter/models/chat_message.dart';
 import 'package:ProjetoPSFlutter/widgets/chat_message_list_item.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
+import 'dart:io';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -14,15 +16,34 @@ class _ChatPageState extends State<ChatPage> {
   final _messageList = <ChatMessage>[];
   final _controllerText = new TextEditingController();
 
-  //void _sendMessage({String text}) {
-    //Firestore.instance
-      //  .collection('messages')
-        //.document()
-        //.setData({'text': text});
-        //_addMessage(name: 'User', text: text, type: ChatMessageType.sent);
-  //}
+  void _sendMessage({String text, File imgFile}) async {
+    Map<String, dynamic> data = {};
+    String name = "User";
+    String type = "ChatMessageType.sent";
 
-    @override
+    if (imgFile != null) {
+      StorageUploadTask task = FirebaseStorage.instance
+          .ref()
+          .child(DateTime.now().millisecondsSinceEpoch.toString())
+          .putFile(imgFile);
+
+      StorageTaskSnapshot taskSnapshot = await task.onComplete;
+      String url = await taskSnapshot.ref.getDownloadURL();
+      data['imgUrl'] = url;
+    }
+
+    if (text != null) {
+      data['text'] = text;
+      data['name'] = name;
+      data['type'] = type;
+      data['time'] = DateTime.now().millisecondsSinceEpoch;
+    }
+    //salva mensagem do usuário no firebase
+    Firestore.instance.collection('user1').document().setData(data);
+    _addMessage(name: 'User', text: text, type: ChatMessageType.sent);
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _controllerText.dispose();
@@ -50,7 +71,7 @@ class _ChatPageState extends State<ChatPage> {
 
 // Cria a lista de mensagens (de baixo para cima)
   Widget _buildList() {
-    return Flexible(
+    return Expanded(
       child: ListView.builder(
         padding: EdgeInsets.all(8.0),
         reverse: true,
@@ -62,10 +83,10 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   // Envia uma mensagem com o padrão a direita
-  void _sendMessage({String text}) {
-    _controllerText.clear();
-    _addMessage(name: 'User', text: text, type: ChatMessageType.sent);
-  }
+  //void _sendMessage({String text}) {
+  //  _controllerText.clear();
+  //  _addMessage(name: 'User', text: text, type: ChatMessageType.sent);
+  //}
 
   // Adiciona uma mensagem na lista de mensagens
   void _addMessage({String name, String text, ChatMessageType type}) {
@@ -104,5 +125,13 @@ class _ChatPageState extends State<ChatPage> {
         name: 'NomeDoBot',
         text: response.getMessage() ?? '',
         type: ChatMessageType.received);
+
+    // salva a mensagem do bot no firebase
+    Firestore.instance.collection("user1").document().setData({
+      "name": "NomeDoBot",
+      "text": response.getMessage(),
+      "type": "ChatMessageType.received",
+      "time": DateTime.now().millisecondsSinceEpoch
+    });
   }
 }
