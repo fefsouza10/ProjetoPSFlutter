@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "992317847731",
-    "firebase_url": "https://authps-1ae85.firebaseio.com",
-    "project_id": "authps-1ae85",
-    "storage_bucket": "authps-1ae85.appspot.com"
+    "project_number": "653877672290",
+    "firebase_url": "https://nomedobot-bribmw.firebaseio.com",
+    "project_id": "nomedobot-bribmw",
+    "storage_bucket": "nomedobot-bribmw.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:992317847731:android:619689ee3567041e4798c6",
+        "mobilesdk_app_id": "1:653877672290:android:623611bd0d69be9afe143b",
         "android_client_info": {
           "package_name": "com.onionrave.ProjetoPSFlutter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "992317847731-u6srr86kvtc4iousahsfkd3l8pi5b0n3.apps.googleusercontent.com",
+          "client_id": "653877672290-4pbikgdocu4grpmgvfg1o4sac6t11ca3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onionrave.ProjetoPSFlutter",
+            "certificate_hash": "f8880708d5e570ecdff2fa89d2e664952702a5cd"
+          }
+        },
+        {
+          "client_id": "653877672290-hq3ot76t3i0n2ca2dd71etruiekv33go.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAyymYyx5zHnse8Iw2uwX0mD49XcIAjZew"
+          "current_key": "AIzaSyAyYGrcAPs53-KK-BHa5M6tH53pCIBoiBo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "992317847731-u6srr86kvtc4iousahsfkd3l8pi5b0n3.apps.googleusercontent.com",
+              "client_id": "653877672290-hq3ot76t3i0n2ca2dd71etruiekv33go.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -38,4 +46,3 @@
   ],
   "configuration_version": "1"
 }
-
