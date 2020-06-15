@@ -13,8 +13,10 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+
   final _messageList = <ChatMessage>[];
   final _controllerText = new TextEditingController();
+  Map<String, dynamic> dataR = {};
 
   void _sendMessage({String text, File imgFile}) async {
     Map<String, dynamic> data = {};
@@ -61,7 +63,7 @@ class _ChatPageState extends State<ChatPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
-          _buildList(),
+          _buildList2(),
           Divider(height: 1.0),
           TextComposer(_sendMessage),
         ],
@@ -81,6 +83,43 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
+
+Widget _buildList2(){
+  return Expanded(
+    child: StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection("user1").snapshots(),
+      builder: (context, snapshot){
+        switch(snapshot.connectionState){
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return Center(child: CircularProgressIndicator(),
+            );
+          default:
+            List<DocumentSnapshot> documents = snapshot.data.documents;
+            //documents.forEach((d) { 
+            //  dataR['text'] = documents[d].data['text'];
+            //  dataR['name'] = documents[d].data['name'];
+            //  dataR['type'] = documents[d].data['type'];
+              
+            //  _addMessage(name: 'User', text: text, type: ChatMessageType.sent);
+            //});
+
+            return ListView.builder(
+              padding: EdgeInsets.all(8.0),
+              reverse: true,
+              itemBuilder: (_, int index) =>
+                ChatMessageListItem(chatMessage: _messageList[index]),
+              itemCount: _messageList.length,
+            );
+          }
+        }
+    )
+  );
+}
+
+    //Future QuerySnapshot snapshot = await Firestore.instance.collection("user1").getDocuments();
+    //snapshot.documents.forEach((d){
+    //  print(d.data);
 
   // Envia uma mensagem com o padrão a direita
   //void _sendMessage({String text}) {
