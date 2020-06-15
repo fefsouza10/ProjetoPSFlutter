@@ -25,7 +25,7 @@ class ChatMessageListItem extends StatelessWidget {
     Widget _showReceivedMessage() {
     return ListTile(
       contentPadding: EdgeInsets.fromLTRB(8.0, 0.0, 64.0, 0.0),
-      leading: CircleAvatar( backgroundImage: NetworkImage("https://www.inbot.com.br/cases/roboed/fotos/ed-foto-2.jpg"),),
+      leading: CircleAvatar( backgroundImage: AssetImage("assets/robot.jfif"),),
       title: Text(chatMessage.name, textAlign: TextAlign.left),
       subtitle: Text(chatMessage.text, textAlign: TextAlign.left),
     );

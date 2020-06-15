@@ -6,6 +6,11 @@ import 'package:ProjetoPSFlutter/widgets/chat_message_list_item.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
 
 class ChatPage extends StatefulWidget {
+  final String botName;
+  final String userName;
+
+  ChatPage({this.botName = "James", this.userName = "User"});
+
   @override
   _ChatPageState createState() => _ChatPageState();
 }
@@ -29,24 +34,14 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("NomeDoBot"),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.purple,
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: <Widget>[
-          _buildList(),
-          Divider(height: 1.0),
-          TextComposer(_sendMessage),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+    body: Column(
+      children: <Widget>[
+      _buildList(),
+      Divider(height: 1.0),
+      TextComposer(_sendMessage),
+    ],
+  ));
 
 // Cria a lista de mensagens (de baixo para cima)
   Widget _buildList() {
@@ -54,8 +49,7 @@ class _ChatPageState extends State<ChatPage> {
       child: ListView.builder(
         padding: EdgeInsets.all(8.0),
         reverse: true,
-        itemBuilder: (_, int index) =>
-            ChatMessageListItem(chatMessage: _messageList[index]),
+        itemBuilder: (_, int index) => ChatMessageListItem(chatMessage: _messageList[index]),
         itemCount: _messageList.length,
       ),
     );
@@ -64,7 +58,7 @@ class _ChatPageState extends State<ChatPage> {
   // Envia uma mensagem com o padrão a direita
   void _sendMessage({String text}) {
     _controllerText.clear();
-    _addMessage(name: 'User', text: text, type: ChatMessageType.sent);
+    _addMessage(name: widget.userName, text: text, type: ChatMessageType.sent);
   }
 
   // Adiciona uma mensagem na lista de mensagens
@@ -83,15 +77,13 @@ class _ChatPageState extends State<ChatPage> {
   Future _dialogFlowRequest({String query}) async {
     // Adiciona uma mensagem temporária na lista
     _addMessage(
-        name: 'NomeDoBot',
+        name: widget.botName,
         text: 'Escrevendo...',
         type: ChatMessageType.received);
 
     // Faz a autenticação com o serviço, envia a mensagem e recebe uma resposta da Intent
-    AuthGoogle authGoogle =
-        await AuthGoogle(fileJson: "assets/key.json").build();
-    Dialogflow dialogflow =
-        Dialogflow(authGoogle: authGoogle, language: "pt-BR");
+    AuthGoogle authGoogle = await AuthGoogle(fileJson: "assets/key.json").build();
+    Dialogflow dialogflow = Dialogflow(authGoogle: authGoogle, language: Language.portugueseBrazilian);
     AIResponse response = await dialogflow.detectIntent(query);
 
     // remove a mensagem temporária
@@ -101,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
 
     // adiciona a mensagem com a resposta do DialogFlow
     _addMessage(
-        name: 'NomeDoBot',
+        name: widget.botName,
         text: response.getMessage() ?? '',
         type: ChatMessageType.received);
   }
