@@ -18,11 +18,11 @@ class DemoRequester implements DBRequester {
   Future<List<NewsInfo>> requestNews(int index, int count) async {
     await Future.delayed(Duration(seconds: 1));
     return [
-      NewsInfo(AssetImage("assets/ed-avatar.jpg"), "Título bom bolado", "asdasdasdasdasdasdasdasdasdasdasdasdasdsa"),
-      NewsInfo(AssetImage("assets/ed-avatar.jpg"), "Título bom bolado", "asdasdasdasdasdasdasdasdasdasdasdasdasdsa"),
-      NewsInfo(AssetImage("assets/ed-avatar.jpg"), "Título bom bolado", "asdasdasdasdasdasdasdasdasdasdasdasdasdsa"),
-      NewsInfo(AssetImage("assets/ed-avatar.jpg"), "Título bom bolado", "asdasdasdasdasdasdasdasdasdasdasdasdasdsa"),
-      NewsInfo(AssetImage("assets/ed-avatar.jpg"), "Título bom bolado", "asdasdasdasdasdasdasdasdasdasdasdasdasdsa"),
+      NewsInfo(AssetImage("assets/images/ed-avatar.jpg"), "Título bom bolado", "asdasdasdasdasdasdasdasdasdasdasdasdasdsa"),
+      NewsInfo(AssetImage("assets/images/ed-avatar.jpg"), "Título bom bolado", "asdasdasdasdasdasdasdasdasdasdasdasdasdsa"),
+      NewsInfo(AssetImage("assets/images/ed-avatar.jpg"), "Título bom bolado", "asdasdasdasdasdasdasdasdasdasdasdasdasdsa"),
+      NewsInfo(AssetImage("assets/images/ed-avatar.jpg"), "Título bom bolado", "asdasdasdasdasdasdasdasdasdasdasdasdasdsa"),
+      NewsInfo(AssetImage("assets/images/ed-avatar.jpg"), "Título bom bolado", "asdasdasdasdasdasdasdasdasdasdasdasdasdsa"),
     ];
   }
 }
