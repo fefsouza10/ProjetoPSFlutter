@@ -1,31 +1,22 @@
+import 'package:ProjetoPSFlutter/widgets/text_composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'editarperfil_page.dart';
+import 'perfil_page.dart';
 
-class PerfilPage extends StatefulWidget {
+class EditarPerfilPage extends StatefulWidget {
   @override
-  _PerfilPageState createState() => _PerfilPageState();
+  _EditarPerfilPageState createState() => _EditarPerfilPageState();
 }
 
-class _PerfilPageState extends State<PerfilPage> {
-  Map<String, dynamic> data = {
-    "name": "Teste",
-    "email": "teste@exemplo.com",
-  };
+class _EditarPerfilPageState extends State<EditarPerfilPage> {
 
-//TextEditingController =
+String id;
+final db = Firestore.instance;
+String name;
+String email;
 
-  String id;
-  final db = Firestore.instance;
-  String name;
 
-  void initState() {
-    setState(() {
-      readData();
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,27 +49,21 @@ class _PerfilPageState extends State<PerfilPage> {
                       ]),
                 ),
                 SizedBox(height: 30.0),
-                Material(
-                  color: Colors.white,
-                  child: Text(
-                    data['name'],
-                    style: TextStyle(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Montserrat",
-                        color: Colors.black),
-                  ),
+                Text(
+                  "Batman",
+                  style: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Montserrat",
+                      color: Colors.black),
                 ),
                 SizedBox(height: 15.0),
-                Material(
-                  color: Colors.white,
-                  child: Text(
-                    data['email'],
-                    style: TextStyle(
-                        fontSize: 17.0,
-                        fontStyle: FontStyle.italic,
-                        fontFamily: "Montserrat"),
-                  ),
+                Text(
+                  "email@exemplo.com",
+                  style: TextStyle(
+                      fontSize: 17.0,
+                      fontStyle: FontStyle.italic,
+                      fontFamily: "Montserrat"),
                 ),
                 SizedBox(
                   height: 250.0,
@@ -92,12 +77,10 @@ class _PerfilPageState extends State<PerfilPage> {
                     color: Colors.green,
                     elevation: 7.0,
                     child: GestureDetector(
-                      onTap: () {
-                        _showEditarPerfil();
-                      },
+                      onTap: () {},
                       child: Center(
                         child: Text(
-                          "Editar perfil",
+                          "Salvar",
                           style: TextStyle(
                               color: Colors.white, fontFamily: "Montserrat"),
                         ),
@@ -117,10 +100,12 @@ class _PerfilPageState extends State<PerfilPage> {
                     color: Colors.red,
                     elevation: 7.0,
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                       child: Center(
                         child: Text(
-                          "Log out",
+                          "Voltar",
                           style: TextStyle(
                               color: Colors.white, fontFamily: "Montserrat"),
                         ),
@@ -134,19 +119,8 @@ class _PerfilPageState extends State<PerfilPage> {
     );
   }
 
-  void readData() async {
-    DocumentSnapshot snapshot =
-        await db.collection('conversas').document("user1").get();
-    print(snapshot.data['name']);
-    print(snapshot.data['email']);
-    data['name'] = snapshot.data['name'];
-    data['email'] = snapshot.data['email'];
-  }
+ 
 
-  void _showEditarPerfil() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => EditarPerfilPage()));
-  }
 }
 
 class GetClipper extends CustomClipper<Path> {
