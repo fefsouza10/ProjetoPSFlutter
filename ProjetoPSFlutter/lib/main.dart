@@ -7,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
-//Firestore.instance.collection("col").document("doc").setData({"texto": "felipe"});
 
   runApp(TabBarDemo());
 
@@ -16,6 +15,7 @@ void main() async {
 class TabBarDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
+
     debugShowCheckedModeBanner: false,
     home: DefaultTabController(
       length: 4,

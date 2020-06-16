@@ -54,12 +54,6 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("NomeDoBot"),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.purple,
-      ),
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[

@@ -21,135 +21,183 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(color: Colors.white.withOpacity(1.0)),
-        ClipPath(
-          child: Container(color: Colors.purple.withOpacity(1.0)),
-          clipper: GetClipper(),
-        ),
-        Positioned(
-            width: 350.0,
-            left: 25.0,
-            top: MediaQuery.of(context).size.height / 5,
-            child: Column(
-              children: <Widget>[
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      Material(
-                        child: Container(
-                            child: Padding(
-                          padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0,),
-                          child: TextFormField(
-                            onChanged: (text){
-                              data['name'] = text;
-                            },
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "Campo vazio";
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                labelText: "Editar nome",
-                                labelStyle: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 17,
-                                    fontFamily: 'Montserrat')),
-                          ),
-                        )),
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      Material(
-                        child: Container(
-                            child: Padding(
-                          padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0,),
-                          child: TextFormField(
-                            onChanged: (text){
-                              data['email'] = text;
-                            },
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "Campo vazio";
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                labelText: "Editar e-mail",
-                                labelStyle: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 17,
-                                    fontFamily: 'Montserrat')),
-                          ),
-                        )),
-                      ),
-                    ],
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Container(color: Colors.white.withOpacity(1.0)),
+          ClipPath(
+            child: Container(color: Colors.purple.withOpacity(1.0)),
+            clipper: GetClipper(),
+          ),
+          Positioned(
+              width: 350.0,
+              left: 25.0,
+              top: MediaQuery.of(context).size.height / 5,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 0.0,
                   ),
-                ),
-                SizedBox(
-                  height: 100.0,
-                ),
-                Container(
-                  height: 30.0,
-                  width: 95.0,
-                  child: Material(
+                  Container(
+                    height: 70.0,
+                    width: 250.0,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(20.0),
+                      shadowColor: Colors.black,
+                      color: Colors.white,
+                      elevation: 7.0,
+                      child: Center(
+                        child: Text(
+                          "Edite seu perfil",
+                          style: TextStyle(
+                              fontSize: 30.0, fontFamily: "Montserrat"),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40.0,
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        Material(
+                          color: Colors.purple,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.purple,
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              child: Padding(
+                                  padding: EdgeInsets.all(0),
+                                  child: Material(
+                                    child: TextFormField(
+                                      onChanged: (text) {
+                                        data['name'] = text;
+                                      },
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          return "Campo vazio";
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0)),
+                                          labelText: "Editar nome",
+                                          labelStyle: TextStyle(
+                                              color: Colors.black87,
+                                              fontSize: 17,
+                                              fontFamily: 'Montserrat')),
+                                    ),
+                                  ))),
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Material(
+                          child: Container(
+                              child: Padding(
+                            padding: EdgeInsets.all(0),
+                            child: TextFormField(
+                              onChanged: (text) {
+                                data['email'] = text;
+                              },
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return "Campo vazio";
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  labelText: "Editar e-mail",
+                                  labelStyle: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 17,
+                                      fontFamily: 'Montserrat')),
+                            ),
+                          )),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100.0,
+                  ),
+                  Container(
+                    height: 40.0,
+                    width: 105.0,
+                    child: Material(
                       borderRadius: BorderRadius.circular(20.0),
                       shadowColor: Colors.greenAccent,
                       color: Colors.green,
                       elevation: 7.0,
                       child: RaisedButton(
-                        
+                        color: Colors.green,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.green)),
                         onPressed: () {
                           // Validate returns true if the form is valid, otherwise false.
                           if (_formKey.currentState.validate()) {
                             // If the form is valid, display a snackbar. In the real world,
                             // you'd often call a server or save the information in a database.
                             Firestore.instance
-                                .collection("conversas")
-                                .document("user1")
+                                .collection("user1")
+                                .document("dadosUser")
                                 .updateData(data);
-                                setState(() {
-                                  Navigator.pop(context, data);
-                                });
+                            setState(() {
+                              Navigator.pop(context, data);
+                            });
                             Scaffold.of(context).showSnackBar(
                                 SnackBar(content: Text('Processing Data')));
                           }
                         },
-                        child: Text('Submit'),
-                      )),
-                ),
-                SizedBox(
-                  height: 15.0,
-                ),
-                Container(
-                  height: 30.0,
-                  width: 95.0,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(20.0),
-                    shadowColor: Colors.redAccent,
-                    color: Colors.red,
-                    elevation: 7.0,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Center(
                         child: Text(
-                          "Voltar",
-                          style: TextStyle(
-                              color: Colors.white, fontFamily: "Montserrat"),
+                          'Salvar',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            )),
-      ],
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Container(
+                    height: 40.0,
+                    width: 105.0,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(20.0),
+                      shadowColor: Colors.redAccent,
+                      color: Colors.red,
+                      elevation: 7.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Center(
+                          child: Text(
+                            "Voltar",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )),
+        ],
+      ),
+      appBar: AppBar(
+        backgroundColor: Colors.purple,
+        title: Text("Voltar para Perfil"),
+      ),
     );
   }
 
@@ -165,8 +213,8 @@ class GetClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = new Path();
 
-    path.lineTo(0.0, size.height / 2.87);
-    path.lineTo(size.width + 125, 0.0);
+    path.lineTo(0.0, size.height / 3.5);
+    path.lineTo(size.width + 50000, 0.0);
     path.close();
     return path;
   }

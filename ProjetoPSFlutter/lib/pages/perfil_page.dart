@@ -93,8 +93,8 @@ class _PerfilPageState extends State<PerfilPage> {
                           height: 100.0,
                         ),
                         Container(
-                          height: 30.0,
-                          width: 95.0,
+                          height: 40.0,
+                          width: 105.0,
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
                             shadowColor: Colors.greenAccent,
@@ -108,8 +108,8 @@ class _PerfilPageState extends State<PerfilPage> {
                                 child: Text(
                                   "Editar perfil",
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Montserrat"),
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
@@ -119,8 +119,8 @@ class _PerfilPageState extends State<PerfilPage> {
                           height: 15.0,
                         ),
                         Container(
-                          height: 30.0,
-                          width: 95.0,
+                          height: 40.0,
+                          width: 105.0,
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
                             shadowColor: Colors.redAccent,
@@ -132,8 +132,8 @@ class _PerfilPageState extends State<PerfilPage> {
                                 child: Text(
                                   "Log out",
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Montserrat"),
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
@@ -172,8 +172,8 @@ class GetClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = new Path();
 
-    path.lineTo(0.0, size.height / 2.87);
-    path.lineTo(size.width + 125, 0.0);
+    path.lineTo(0.0, size.height / 1.87);
+    path.lineTo(size.width + 0, 0.0);
     path.close();
     return path;
   }
