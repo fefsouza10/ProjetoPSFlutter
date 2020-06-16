@@ -1,5 +1,6 @@
 import 'package:ProjetoPSFlutter/widgets/text_composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'perfil_page.dart';
@@ -10,13 +11,13 @@ class EditarPerfilPage extends StatefulWidget {
 }
 
 class _EditarPerfilPageState extends State<EditarPerfilPage> {
+  final _formKey = GlobalKey<FormState>();
 
-String id;
-final db = Firestore.instance;
-String name;
-String email;
-
-
+  Map<String, dynamic> data = {};
+  String id;
+  final db = Firestore.instance;
+  String name;
+  String email;
 
   @override
   Widget build(BuildContext context) {
@@ -33,60 +34,93 @@ String email;
             top: MediaQuery.of(context).size.height / 5,
             child: Column(
               children: <Widget>[
-                Container(
-                  width: 150.0,
-                  height: 150.0,
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      image: DecorationImage(
-                          image: NetworkImage(
-                            ("https://i.imgur.com/vIeNO5P.png"),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Material(
+                        child: Container(
+                            child: Padding(
+                          padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0,),
+                          child: TextFormField(
+                            onChanged: (text){
+                              data['name'] = text;
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Campo vazio";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                                labelText: "Editar nome",
+                                labelStyle: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 17,
+                                    fontFamily: 'Montserrat')),
                           ),
-                          fit: BoxFit.cover),
-                      borderRadius: BorderRadius.all(Radius.circular(75.0)),
-                      boxShadow: [
-                        BoxShadow(blurRadius: 7.0, color: Colors.black)
-                      ]),
-                ),
-                SizedBox(height: 30.0),
-                Text(
-                  "Batman",
-                  style: TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Montserrat",
-                      color: Colors.black),
-                ),
-                SizedBox(height: 15.0),
-                Text(
-                  "email@exemplo.com",
-                  style: TextStyle(
-                      fontSize: 17.0,
-                      fontStyle: FontStyle.italic,
-                      fontFamily: "Montserrat"),
+                        )),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Material(
+                        child: Container(
+                            child: Padding(
+                          padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0,),
+                          child: TextFormField(
+                            onChanged: (text){
+                              data['email'] = text;
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Campo vazio";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                                labelText: "Editar e-mail",
+                                labelStyle: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 17,
+                                    fontFamily: 'Montserrat')),
+                          ),
+                        )),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
-                  height: 250.0,
+                  height: 100.0,
                 ),
                 Container(
                   height: 30.0,
                   width: 95.0,
                   child: Material(
-                    borderRadius: BorderRadius.circular(20.0),
-                    shadowColor: Colors.greenAccent,
-                    color: Colors.green,
-                    elevation: 7.0,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Center(
-                        child: Text(
-                          "Salvar",
-                          style: TextStyle(
-                              color: Colors.white, fontFamily: "Montserrat"),
-                        ),
-                      ),
-                    ),
-                  ),
+                      borderRadius: BorderRadius.circular(20.0),
+                      shadowColor: Colors.greenAccent,
+                      color: Colors.green,
+                      elevation: 7.0,
+                      child: RaisedButton(
+                        
+                        onPressed: () {
+                          // Validate returns true if the form is valid, otherwise false.
+                          if (_formKey.currentState.validate()) {
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+                            Firestore.instance
+                                .collection("conversas")
+                                .document("user1")
+                                .updateData(data);
+                                setState(() {
+                                  Navigator.pop(context, data);
+                                });
+                            Scaffold.of(context).showSnackBar(
+                                SnackBar(content: Text('Processing Data')));
+                          }
+                        },
+                        child: Text('Submit'),
+                      )),
                 ),
                 SizedBox(
                   height: 15.0,
@@ -119,8 +153,11 @@ String email;
     );
   }
 
- 
-
+  void readData() async {
+    DocumentSnapshot snapshot =
+        await db.collection('conversas').document("user1").get();
+    print(snapshot.data);
+  }
 }
 
 class GetClipper extends CustomClipper<Path> {
@@ -128,7 +165,7 @@ class GetClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = new Path();
 
-    path.lineTo(0.0, size.height / 2.37);
+    path.lineTo(0.0, size.height / 2.87);
     path.lineTo(size.width + 125, 0.0);
     path.close();
     return path;
@@ -136,6 +173,6 @@ class GetClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return null;
+    return true;
   }
 }

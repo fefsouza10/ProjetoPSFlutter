@@ -11,22 +11,6 @@ void main() async {
 
   runApp(TabBarDemo());
 
-  Firestore.instance
-      .collection("col")
-      .document("doc")
-      .setData({"texto": "felipe"});
-//inserir um doc no firestore
-  Firestore.instance
-      .collection("mensagens")
-      .document()
-      .setData({"texto": "1515151"});
-//puxar documentos do firestore
-  QuerySnapshot snapshot =
-      await Firestore.instance.collection("mensagens").getDocuments();
-//printar dados da snapshot
-  snapshot.documents.forEach((d) {
-    print(d.data);
-  });
 }
 
 class TabBarDemo extends StatelessWidget {

@@ -10,7 +10,6 @@ class PerfilPage extends StatefulWidget {
 }
 
 class _PerfilPageState extends State<PerfilPage> {
-
 //TextEditingController =
 
   String id;
@@ -19,9 +18,9 @@ class _PerfilPageState extends State<PerfilPage> {
 
   void initState() {
     setState(() {
+      super.initState();
       readData();
     });
-    super.initState();
   }
 
   @override
@@ -41,14 +40,13 @@ class _PerfilPageState extends State<PerfilPage> {
               future: readData(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
-
                   case ConnectionState.none:
                   case ConnectionState.waiting:
                   case ConnectionState.active:
-                    // TODO: Handle this case.
                     break;
                   case ConnectionState.done:
-                    if (!snapshot.hasData) return Text("Não foi possível carregar o seu perfil.");
+                    if (!snapshot.hasData)
+                      return Text("Não foi possível carregar o seu perfil.");
                     var data = snapshot.data as Map<String, dynamic>;
                     return Column(
                       children: <Widget>[
@@ -62,7 +60,8 @@ class _PerfilPageState extends State<PerfilPage> {
                                     ("https://i.imgur.com/vIeNO5P.png"),
                                   ),
                                   fit: BoxFit.cover),
-                              borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(75.0)),
                               boxShadow: [
                                 BoxShadow(blurRadius: 7.0, color: Colors.black)
                               ]),
@@ -91,7 +90,7 @@ class _PerfilPageState extends State<PerfilPage> {
                           ),
                         ),
                         SizedBox(
-                          height: 250.0,
+                          height: 100.0,
                         ),
                         Container(
                           height: 30.0,
@@ -109,7 +108,8 @@ class _PerfilPageState extends State<PerfilPage> {
                                 child: Text(
                                   "Editar perfil",
                                   style: TextStyle(
-                                      color: Colors.white, fontFamily: "Montserrat"),
+                                      color: Colors.white,
+                                      fontFamily: "Montserrat"),
                                 ),
                               ),
                             ),
@@ -132,7 +132,8 @@ class _PerfilPageState extends State<PerfilPage> {
                                 child: Text(
                                   "Log out",
                                   style: TextStyle(
-                                      color: Colors.white, fontFamily: "Montserrat"),
+                                      color: Colors.white,
+                                      fontFamily: "Montserrat"),
                                 ),
                               ),
                             ),
@@ -141,7 +142,10 @@ class _PerfilPageState extends State<PerfilPage> {
                       ],
                     );
                 }
-                return SpinKitFadingCircle(color: Colors.purple, size: 50,);
+                return SpinKitFadingCircle(
+                  color: Colors.purple,
+                  size: 50,
+                );
               },
             )),
       ],
@@ -149,16 +153,17 @@ class _PerfilPageState extends State<PerfilPage> {
   }
 
   Future<Map<String, dynamic>> readData() async {
-    DocumentSnapshot snapshot = await db.collection('conversas').document("user1").get();
-//    var data = Map<String, dynamic>();
-//    data['name'] = snapshot.data['name'];
-//    data['email'] = snapshot.data['email'];
+    DocumentSnapshot snapshot =
+        await db.collection('user1').document("dadosUser").get();
     return snapshot.data;
   }
 
   void _showEditarPerfil() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => EditarPerfilPage()));
+    Navigator.push(context,
+            MaterialPageRoute(builder: (context) => EditarPerfilPage()))
+        .then((value) {
+      setState(() {});
+    });
   }
 }
 
@@ -167,7 +172,7 @@ class GetClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = new Path();
 
-    path.lineTo(0.0, size.height / 2.37);
+    path.lineTo(0.0, size.height / 2.87);
     path.lineTo(size.width + 125, 0.0);
     path.close();
     return path;
@@ -175,6 +180,6 @@ class GetClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return null;
+    return true;
   }
 }
