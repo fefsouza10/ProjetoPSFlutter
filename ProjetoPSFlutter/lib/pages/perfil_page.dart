@@ -9,7 +9,6 @@ class PerfilPage extends StatefulWidget {
 }
 
 class _PerfilPageState extends State<PerfilPage> {
-
   String id;
   final db = Firestore.instance;
   String name;
@@ -89,18 +88,18 @@ class _PerfilPageState extends State<PerfilPage> {
                     SizedBox(
                       height: 70.0,
                     ),
-                    Container(
-                      height: 40.0,
-                      width: 105.0,
-                      child: Material(
-                        borderRadius: BorderRadius.circular(20.0),
-                        shadowColor: Colors.greenAccent,
-                        color: Colors.green,
-                        elevation: 7.0,
-                        child: GestureDetector(
-                          onTap: () {
-                            _showEditarPerfil();
-                          },
+                    GestureDetector(
+                      onTap: () {
+                        _showEditarPerfil();
+                      },
+                      child: Container(
+                        height: 40.0,
+                        width: 105.0,
+                        child: Material(
+                          borderRadius: BorderRadius.circular(20.0),
+                          shadowColor: Colors.greenAccent,
+                          color: Colors.green,
+                          elevation: 7.0,
                           child: Center(
                             child: Text(
                               "Editar perfil",

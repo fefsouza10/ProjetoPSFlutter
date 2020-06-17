@@ -25,7 +25,6 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
             Center(
                 child: Column(
               children: <Widget>[
-                
                 SizedBox(
                   height: 130,
                 ),
@@ -40,8 +39,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                     child: Center(
                       child: Text(
                         "Edite seu perfil",
-                        style:
-                            TextStyle(fontSize: 30.0, fontFamily: "Montserrat", color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 30.0,
+                            fontFamily: "Montserrat",
+                            color: Colors.white),
                       ),
                     ),
                   ),
@@ -74,6 +75,11 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                       return null;
                                     },
                                     decoration: InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.purple),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
                                         border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10.0)),
@@ -104,6 +110,11 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                                   return null;
                                 },
                                 decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.purple),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0)),
@@ -160,18 +171,18 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                 SizedBox(
                   height: 15.0,
                 ),
-                Container(
-                  height: 40.0,
-                  width: 105.0,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(20.0),
-                    shadowColor: Colors.redAccent,
-                    color: Colors.red,
-                    elevation: 7.0,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: 40.0,
+                    width: 105.0,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(20.0),
+                      shadowColor: Colors.redAccent,
+                      color: Colors.red,
+                      elevation: 7.0,
                       child: Center(
                         child: Text(
                           "Voltar",
