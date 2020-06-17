@@ -11,11 +11,21 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  static const BotName = "James o Sábio";
+  bool _isComposing = false;
+
+  void _reset() {
+    controller.clear();
+    setState(() {
+      _isComposing = false;
+    });
+  }
+
+  static const BotName = "James, o Sábio";
   static const MessagesCollection = "chatMessages";
   static final ChatMessage introMessage = ChatMessage(
     name: BotName,
-    text: "Olá menu nome é james e estou aqui para conversar com você nessa quarentena, quando tiver um tempinho mande um oi ;)",
+    text:
+        "Olá! Menu nome é James e estou aqui para conversar com você nessa quarentena, quando tiver um tempinho mande um oi ;)",
     type: ChatMessageType.received,
   );
   static final ChatMessage typingMessage = ChatMessage(
@@ -41,63 +51,89 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) => Column(
-    children: <Widget>[
-      buildMessageList(),
-      Divider(height: 1.0),
-      SizedBox(
-        height: 50,
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: TextField(
-                controller: controller,
-                onSubmitted: (text) {
-                  controller.text = "";
-                  sendMessage(text);
-                },
+        children: <Widget>[
+          buildMessageList(),
+          Divider(height: 1.0),
+          SizedBox(
+            height: 50,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      controller: controller,
+                      decoration: InputDecoration.collapsed(
+                          hintText: "Enviar uma mensagem"),
+                      onChanged: (text) {
+                        setState(() {
+                          _isComposing = text.isNotEmpty;
+                        });
+                      },
+                      onSubmitted: (text) {
+                        sendMessage(text);
+                        _reset();
+                      },
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    color: Colors.purple,
+                    onPressed: _isComposing
+                        ? () {
+                            sendMessage(controller.text);
+                            _reset();
+                          }
+                        : null,
+                  ),
+                ],
               ),
             ),
-            IconButton(
-              icon: Icon(Icons.send),
-              onPressed: () {
-                sendMessage(controller.text);
-                controller.text = "";
-              },
-            ),
-          ],
-        ),
-      )
-    ],
-  );
+          )
+        ],
+      );
 
   Widget buildMessageList() => Expanded(
-    child: StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection(MessagesCollection).snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return Center(child: SpinKitFadingCircle(color: Colors.purple, size: 50,),);
-        messages = snapshot.data.documents.map((e) => ChatMessage.fromJson(e.data)).toList();
-        messages.sort((a, b) => b.sentDate.compareTo(a.sentDate));
-        messages = messages + [introMessage];
-        return ListView(
-          children: (typing ? [typingMessage] + messages : messages).map((e) => ChatMessageListItem(chatMessage: e)).toList(),
-          reverse: true,
-        );
-      }
-    )
-  );
+      child: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection(MessagesCollection).snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData)
+              return Center(
+                child: SpinKitFadingCircle(
+                  color: Colors.purple,
+                  size: 50,
+                ),
+              );
+            messages = snapshot.data.documents
+                .map((e) => ChatMessage.fromJson(e.data))
+                .toList();
+            messages.sort((a, b) => b.sentDate.compareTo(a.sentDate));
+            messages = messages + [introMessage];
+            return ListView(
+              children: (typing ? [typingMessage] + messages : messages)
+                  .map((e) => ChatMessageListItem(chatMessage: e))
+                  .toList(),
+              reverse: true,
+            );
+          }));
 
   Future sendMessage(String text) async {
+    Map<String, dynamic> data = {};
+    data = await readDataUser();
     if (text.trim().isEmpty) return;
     typing = true;
-    await Firestore.instance.collection(MessagesCollection).document().setData(ChatMessage(
-      text: text,
-      name: "User",
-      type: ChatMessageType.sent,
-      sentDate: DateTime.now()
-    ).toJson());
+    await Firestore.instance.collection(MessagesCollection).document().setData(
+        ChatMessage(
+                text: text,
+                name: data["name"],
+                type: ChatMessageType.sent,
+                sentDate: DateTime.now())
+            .toJson());
 
-    AuthGoogle authGoogle = await AuthGoogle(fileJson: "assets/key.json").build();
-    Dialogflow dialogflow = Dialogflow(authGoogle: authGoogle, language: Language.portugueseBrazilian);
+    AuthGoogle authGoogle =
+        await AuthGoogle(fileJson: "assets/key.json").build();
+    Dialogflow dialogflow = Dialogflow(
+        authGoogle: authGoogle, language: Language.portugueseBrazilian);
     AIResponse response = await dialogflow.detectIntent(text);
 
     if (response == null) return;
@@ -114,7 +150,27 @@ class _ChatPageState extends State<ChatPage> {
     );
 
     typing = false;
-    await Firestore.instance.collection(MessagesCollection).document().setData(msg.toJson());
+    await Firestore.instance
+        .collection(MessagesCollection)
+        .document()
+        .setData(msg.toJson());
   }
 
+  Future<Map<String, dynamic>> readDataUser() async {
+    DocumentSnapshot snapshot = await Firestore.instance
+        .collection('user1')
+        .document("dadosUser")
+        .get();
+    return snapshot.data;
+  }
+
+  Future<String> readDataChat() async {
+    Map<String, dynamic> data = {};
+    data = await readDataUser();
+    DocumentSnapshot snapshot = await Firestore.instance
+        .collection('chatMessages')
+        .document(data['email'])
+        .get();
+    return data['email'];
+  }
 }
