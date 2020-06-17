@@ -1,11 +1,9 @@
-import 'package:ProjetoPSFlutter/widgets/text_composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ProjetoPSFlutter/models/chat_message.dart';
 import 'package:ProjetoPSFlutter/widgets/chat_message_list_item.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
-import 'dart:io';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -13,164 +11,110 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  static const BotName = "James o Sábio";
+  static const MessagesCollection = "chatMessages";
+  static final ChatMessage introMessage = ChatMessage(
+    name: BotName,
+    text: "Olá menu nome é james e estou aqui para conversar com você nessa quarentena, quando tiver um tempinho mande um oi ;)",
+    type: ChatMessageType.received,
+  );
+  static final ChatMessage typingMessage = ChatMessage(
+    name: BotName,
+    text: "Digitando...",
+    type: ChatMessageType.received,
+  );
 
-  final _messageList = <ChatMessage>[];
-  final _controllerText = new TextEditingController();
-  Map<String, dynamic> dataR = {};
+  TextEditingController controller = TextEditingController();
+  List<ChatMessage> messages = [introMessage];
+  bool typing = false;
 
-  void _sendMessage({String text, File imgFile}) async {
-    Map<String, dynamic> data = {};
-    String name = "User";
-    String type = "ChatMessageType.sent";
-
-    if (imgFile != null) {
-      StorageUploadTask task = FirebaseStorage.instance
-          .ref()
-          .child(DateTime.now().millisecondsSinceEpoch.toString())
-          .putFile(imgFile);
-
-      StorageTaskSnapshot taskSnapshot = await task.onComplete;
-      String url = await taskSnapshot.ref.getDownloadURL();
-      data['imgUrl'] = url;
-    }
-
-    if (text != null) {
-      data['text'] = text;
-      data['name'] = name;
-      data['type'] = type;
-      data['time'] = DateTime.now().millisecondsSinceEpoch;
-    }
-    //salva mensagem do usuário no firebase
-    Firestore.instance.collection('user1').document().setData(data);
-    _addMessage(name: 'User', text: text, type: ChatMessageType.sent);
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controllerText.dispose();
+    controller.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("NomeDoBot"),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.purple,
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: <Widget>[
-          _buildList2(),
-          Divider(height: 1.0),
-          TextComposer(_sendMessage),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Column(
+    children: <Widget>[
+      buildMessageList(),
+      Divider(height: 1.0),
+      SizedBox(
+        height: 50,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                controller: controller,
+                onSubmitted: (text) {
+                  controller.text = "";
+                  sendMessage(text);
+                },
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.send),
+              onPressed: () {
+                sendMessage(controller.text);
+                controller.text = "";
+              },
+            ),
+          ],
+        ),
+      )
+    ],
+  );
 
-// Cria a lista de mensagens (de baixo para cima)
-  Widget _buildList() {
-    return Expanded(
-      child: ListView.builder(
-        padding: EdgeInsets.all(8.0),
-        reverse: true,
-        itemBuilder: (_, int index) =>
-            ChatMessageListItem(chatMessage: _messageList[index]),
-        itemCount: _messageList.length,
-      ),
-    );
-  }
-
-Widget _buildList2(){
-  return Expanded(
+  Widget buildMessageList() => Expanded(
     child: StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection("user1").snapshots(),
-      builder: (context, snapshot){
-        switch(snapshot.connectionState){
-          case ConnectionState.none:
-          case ConnectionState.waiting:
-            return Center(child: CircularProgressIndicator(),
-            );
-          default:
-            List<DocumentSnapshot> documents = snapshot.data.documents;
-            //documents.forEach((d) { 
-            //  dataR['text'] = documents[d].data['text'];
-            //  dataR['name'] = documents[d].data['name'];
-            //  dataR['type'] = documents[d].data['type'];
-              
-            //  _addMessage(name: 'User', text: text, type: ChatMessageType.sent);
-            //});
-
-            return ListView.builder(
-              padding: EdgeInsets.all(8.0),
-              reverse: true,
-              itemBuilder: (_, int index) =>
-                ChatMessageListItem(chatMessage: _messageList[index]),
-              itemCount: _messageList.length,
-            );
-          }
-        }
+      stream: Firestore.instance.collection(MessagesCollection).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Center(child: SpinKitFadingCircle(color: Colors.purple, size: 50,),);
+        messages = snapshot.data.documents.map((e) => ChatMessage.fromJson(e.data)).toList();
+        messages.sort((a, b) => b.sentDate.compareTo(a.sentDate));
+        messages = messages + [introMessage];
+        return ListView(
+          children: (typing ? [typingMessage] + messages : messages).map((e) => ChatMessageListItem(chatMessage: e)).toList(),
+          reverse: true,
+        );
+      }
     )
   );
-}
 
-    //Future QuerySnapshot snapshot = await Firestore.instance.collection("user1").getDocuments();
-    //snapshot.documents.forEach((d){
-    //  print(d.data);
+  Future sendMessage(String text) async {
+    if (text.trim().isEmpty) return;
+    typing = true;
+    await Firestore.instance.collection(MessagesCollection).document().setData(ChatMessage(
+      text: text,
+      name: "User",
+      type: ChatMessageType.sent,
+      sentDate: DateTime.now()
+    ).toJson());
 
-  // Envia uma mensagem com o padrão a direita
-  //void _sendMessage({String text}) {
-  //  _controllerText.clear();
-  //  _addMessage(name: 'User', text: text, type: ChatMessageType.sent);
-  //}
+    AuthGoogle authGoogle = await AuthGoogle(fileJson: "assets/key.json").build();
+    Dialogflow dialogflow = Dialogflow(authGoogle: authGoogle, language: Language.portugueseBrazilian);
+    AIResponse response = await dialogflow.detectIntent(text);
 
-  // Adiciona uma mensagem na lista de mensagens
-  void _addMessage({String name, String text, ChatMessageType type}) {
-    var message = ChatMessage(text: text, name: name, type: type);
-    setState(() {
-      _messageList.insert(0, message);
-    });
+    if (response == null) return;
 
-    if (type == ChatMessageType.sent) {
-      // Envia a mensagem para o chatbot e aguarda sua resposta
-      _dialogFlowRequest(query: message.text);
-    }
+    var textMsg = response.getMessage();
+
+    if (textMsg == null) return;
+
+    var msg = ChatMessage(
+      name: BotName,
+      type: ChatMessageType.received,
+      text: response.getMessage(),
+      sentDate: DateTime.now(),
+    );
+
+    typing = false;
+    await Firestore.instance.collection(MessagesCollection).document().setData(msg.toJson());
   }
 
-  Future _dialogFlowRequest({String query}) async {
-    // Adiciona uma mensagem temporária na lista
-    _addMessage(
-        name: 'NomeDoBot',
-        text: 'Escrevendo...',
-        type: ChatMessageType.received);
-
-    // Faz a autenticação com o serviço, envia a mensagem e recebe uma resposta da Intent
-    AuthGoogle authGoogle =
-        await AuthGoogle(fileJson: "assets/key.json").build();
-    Dialogflow dialogflow =
-        Dialogflow(authGoogle: authGoogle, language: "pt-BR");
-    AIResponse response = await dialogflow.detectIntent(query);
-
-    // remove a mensagem temporária
-    setState(() {
-      _messageList.removeAt(0);
-    });
-
-    // adiciona a mensagem com a resposta do DialogFlow
-    _addMessage(
-        name: 'NomeDoBot',
-        text: response.getMessage() ?? '',
-        type: ChatMessageType.received);
-
-    // salva a mensagem do bot no firebase
-    Firestore.instance.collection("user1").document().setData({
-      "name": "NomeDoBot",
-      "text": response.getMessage(),
-      "type": "ChatMessageType.received",
-      "time": DateTime.now().millisecondsSinceEpoch
-    });
-  }
 }

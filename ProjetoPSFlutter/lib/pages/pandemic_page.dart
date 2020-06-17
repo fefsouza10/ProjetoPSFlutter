@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:ProjetoPSFlutter/models/uf_info.dart';
+import 'package:ProjetoPSFlutter/models/country_info.dart';
 
 class PandemicPage extends StatefulWidget {
   @override
@@ -126,7 +128,7 @@ class PandemicList extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
       backgroundColor: Colors.transparent,
       body: FutureBuilder(future: fetch(), builder: (context, snapshot) {
-        switch (snapshot.connectionState){
+        switch (snapshot.connectionState) {
           case ConnectionState.none:
           case ConnectionState.waiting:
           case ConnectionState.active:

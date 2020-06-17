@@ -52,6 +52,12 @@
 @import image_picker;
 #endif
 
+#if __has_include(<imei_plugin/ImeiPlugin.h>)
+#import <imei_plugin/ImeiPlugin.h>
+#else
+@import imei_plugin;
+#endif
+
 #if __has_include(<path_provider/PathProviderPlugin.h>)
 #import <path_provider/PathProviderPlugin.h>
 #else
@@ -87,6 +93,7 @@
   [FacebookLoginPlugin registerWithRegistrar:[registry registrarForPlugin:@"FacebookLoginPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
+  [ImeiPlugin registerWithRegistrar:[registry registrarForPlugin:@"ImeiPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
   [FLTURLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTURLLauncherPlugin"]];

@@ -1,98 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
-class UFInfo {
-  int uid;
-  String uf;
-  String state;
-  int cases;
-  int deaths;
-  int suspects;
-  int refuses;
-  bool broadcast;
-  String comments;
-  String datetime;
-
-  UFInfo(
-      {this.uid,
-        this.uf,
-        this.state,
-        this.cases,
-        this.deaths,
-        this.suspects,
-        this.refuses,
-        this.broadcast,
-        this.comments,
-        this.datetime});
-
-  UFInfo.fromJson(Map<String, dynamic> json) {
-    uid = json['uid'];
-    uf = json['uf'];
-    state = json['state'];
-    cases = json['cases'];
-    deaths = json['deaths'];
-    suspects = json['suspects'];
-    refuses = json['refuses'];
-    broadcast = json['broadcast'];
-    comments = json['comments'];
-    datetime = json['datetime'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['uid'] = this.uid;
-    data['uf'] = this.uf;
-    data['state'] = this.state;
-    data['cases'] = this.cases;
-    data['deaths'] = this.deaths;
-    data['suspects'] = this.suspects;
-    data['refuses'] = this.refuses;
-    data['broadcast'] = this.broadcast;
-    data['comments'] = this.comments;
-    data['datetime'] = this.datetime;
-    return data;
-  }
-}
-
-class CountryInfo {
-  String country;
-  int cases;
-  int confirmed;
-  int deaths;
-  int recovered;
-  String updatedAt;
-
-  CountryInfo(
-  {this.country,
-    this.cases,
-    this.confirmed,
-    this.deaths,
-    this.recovered,
-    this.updatedAt});
-
-  CountryInfo.fromJson(Map<String, dynamic> json) {
-    country = json['country'];
-    cases = json['cases'];
-    confirmed = json['confirmed'];
-    deaths = json['deaths'];
-    recovered = json['recovered'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['country'] = this.country;
-    data['cases'] = this.cases;
-    data['confirmed'] = this.confirmed;
-    data['deaths'] = this.deaths;
-    data['recovered'] = this.recovered;
-    data['updated_at'] = this.updatedAt;
-    return data;
-  }
-}
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:ProjetoPSFlutter/models/uf_info.dart';
+import 'package:ProjetoPSFlutter/models/country_info.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class _Creator {
   final NumberFormat fmt = NumberFormat("###,###,###,###", Language.portugueseBrazilian);
@@ -126,6 +42,26 @@ class _Creator {
       ),
     ),
   );
+  Widget percent(double percentage, String text) => Row(
+    children: <Widget>[
+      CircularPercentIndicator(
+        percent: percentage,
+        center: Text(
+          "${(100 * percentage).toStringAsFixed(2)}%",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 8,
+          ),
+        ),
+        radius: 50,
+        progressColor: Colors.red[800],
+        circularStrokeCap: CircularStrokeCap.round,
+        animation: true,
+        animationDuration: 1000,
+        footer: Text(text, style: TextStyle(fontSize: 12, color: Colors.white),),
+      ),
+    ],
+  );
 }
 
 class UFCard extends StatelessWidget with _Creator {
@@ -149,7 +85,39 @@ class UFCard extends StatelessWidget with _Creator {
       ),
       children: <Widget>[
         SizedBox(height: 12,),
-
+            () {
+          var pDeaths = (info.deaths.toDouble() / info.cases);
+          return Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  percent(pDeaths, "Taxa de letalidade"),
+                  SizedBox(height: 15,),
+                  SizedBox(
+                    width: 150,
+                    child: Text("Os testes ${
+                        pDeaths < .015 ? "são confiáveis." :
+                        pDeaths < .03 ? "são relativamente confiáveis." :
+                        pDeaths < .045 ? "já não são muito confiáveis." :
+                        "não estão sendo suficientes e não são confiáveis para investigar o avanço da pandemia no local.\n"}",
+                      style: TextStyle(color: Colors.white,),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        }(),
+        Text(
+          "As conclusões apresentadas são somente uma estimativa, para mais informações consulte as autoridades de saúde ou acesse o Painel Coronavirus no site covid.saude.gov.br",
+          style: TextStyle(
+            color: Colors.red[900],
+            fontSize: 8,
+          ),
+          textAlign: TextAlign.center,
+        )
       ],
     ),
   ));
@@ -175,7 +143,63 @@ class CountryCard extends StatelessWidget with _Creator {
         ],
       ),
       children: <Widget>[
-
+        SizedBox(height: 12,),
+        () {
+          var pDeaths = (info.deaths.toDouble() / info.confirmed);
+          var r = Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  percent(pDeaths, "Taxa de letalidade"),
+                  SizedBox(height: 15,),
+                  SizedBox(
+                    width: 150,
+                    child: Text("Os testes ${
+                        pDeaths < .015 ? "são confiáveis." :
+                        pDeaths < .03 ? "são relativamente confiáveis." :
+                        pDeaths < .045 ? "já não são muito confiáveis." :
+                        "não estão sendo suficientes e não são confiáveis para investigar o avanço da pandemia no local.\n"}",
+                      style: TextStyle(color: Colors.white,),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+          if (info.recovered == null) return r;
+          var pRecovered = info.recovered.toDouble() / info.confirmed;
+          r.children.add(
+            Column(
+              children: <Widget>[
+                percent(pRecovered, "Taxa de recuperação"),
+                SizedBox(height: 15,),
+                SizedBox(
+                  width: 150,
+                  child: Text("A curva do espalhamento do vírus ${
+                      pRecovered <= .55 ? "ainda está crescente e provávelmente ainda não atingiu seu pico." :
+                      pDeaths < .65 ? "ainda está crescente, porém com tendências a diminuir." :
+                      pDeaths < .85 ? "está sendo bem controlada e com tendências a diminuir." :
+                      "está sendo muito bem controlada e deverá diminuir em breve.\n"}",
+                    style: TextStyle(color: Colors.white, ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            )
+          );
+          return r;
+        }(),
+        Text(
+          "As conclusões apresentadas são somente uma estimativa, para mais informações consulte as autoridades de saúde.",
+          style: TextStyle(
+            color: Colors.red[900],
+            fontSize: 8,
+          ),
+          textAlign: TextAlign.center,
+        )
       ],
     ),
   ));

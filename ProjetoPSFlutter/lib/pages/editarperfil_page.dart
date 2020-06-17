@@ -1,8 +1,5 @@
-import 'package:ProjetoPSFlutter/widgets/text_composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'perfil_page.dart';
 
 class EditarPerfilPage extends StatefulWidget {
   @override
@@ -15,8 +12,6 @@ String id;
 final db = Firestore.instance;
 String name;
 String email;
-
-
 
   @override
   Widget build(BuildContext context) {
