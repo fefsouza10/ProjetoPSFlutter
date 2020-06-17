@@ -53,7 +53,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) => Column(
         children: <Widget>[
           buildMessageList(),
-          Divider(height: 1.0),
+          Divider(height: 20.0),
           SizedBox(
             height: 50,
             child: Container(
