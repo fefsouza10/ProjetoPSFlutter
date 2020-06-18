@@ -179,7 +179,7 @@ class CountryCard extends StatelessWidget with _Creator {
                 SizedBox(
                   width: 150,
                   child: Text("A curva do espalhamento do vírus ${
-                      pRecovered <= .55 ? "ainda está crescente e provávelmente ainda não atingiu seu pico." :
+                      pRecovered <= .55 ? "ainda está crescente e provavelmente ainda não atingiu seu pico." :
                       pDeaths < .65 ? "ainda está crescente, porém com tendências a diminuir." :
                       pDeaths < .85 ? "está sendo bem controlada e com tendências a diminuir." :
                       "está sendo muito bem controlada e deverá diminuir em breve.\n"}",
