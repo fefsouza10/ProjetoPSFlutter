@@ -50,8 +50,16 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) => GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onPanDown: (_) {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Column(
         children: <Widget>[
+          SizedBox(
+            height: 10.0,
+          ),
           buildMessageList(),
           Divider(height: 20.0),
           SizedBox(
@@ -91,7 +99,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           )
         ],
-      );
+      ));
 
   Widget buildMessageList() => Expanded(
       child: StreamBuilder<QuerySnapshot>(
@@ -164,13 +172,4 @@ class _ChatPageState extends State<ChatPage> {
     return snapshot.data;
   }
 
-  Future<String> readDataChat() async {
-    Map<String, dynamic> data = {};
-    data = await readDataUser();
-    DocumentSnapshot snapshot = await Firestore.instance
-        .collection('chatMessages')
-        .document(data['email'])
-        .get();
-    return data['email'];
-  }
 }
