@@ -1,3 +1,17 @@
+//  - Integrantes do grupo:
+// Bruno Garcia Caitano - RM81449
+// Felipe Ferreira de Souza - RM81474
+// Lucas Tomaz Cantuária - RM79869
+// Pedro Estevam Oliveira Fonseca - RM80193
+// Weslley Francis Fernandes - RM81609
+
+//  - Link do Github:
+// https://github.com/kmrbolas/ProjetoPSFlutter
+
+//  - Link do vídeo de apresentação do aplicativo:
+// https://www.youtube.com/watch?v=8kRu0uhIcLQ&t=38s
+
+
 import 'package:ProjetoPSFlutter/pages/chat_page.dart';
 import 'package:ProjetoPSFlutter/pages/pandemic_page.dart';
 import 'pages/noticias_page.dart';
